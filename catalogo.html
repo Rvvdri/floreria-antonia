@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florería Antonia - Flores que enamoran</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        body { transition: background-color 0.8s ease; background-color: #fdfdfd; overflow-x: hidden; }
+        
+        @keyframes cartJump {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .cart-animar { animation: cartJump 0.4s ease-out; }
+
+        .filtros-container { display: flex; justify-content: center; gap: 15px; margin: 20px 0 30px 0; flex-wrap: wrap; }
+        .btn-filtro { padding: 10px 22px; border: 2px solid #d63384; background: transparent; color: #d63384; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; font-family: 'Montserrat', sans-serif; font-size: 0.9rem; }
+        .btn-filtro.active, .btn-filtro:hover { background: #d63384; color: white; box-shadow: 0 4px 10px rgba(214, 51, 132, 0.3); }
+
+        #contenedor-productos { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+            gap: 25px; 
+            padding: 20px 0; 
+        }
+
+        /* Optimización Móvil (Paso 4) */
+        @media (max-width: 600px) {
+            #contenedor-productos {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                padding: 10px;
+            }
+            .card-nombre { font-size: 0.85rem; height: 35px; }
+            .card-precio { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="preloader">
+        <div class="preloader-content">
+            <img src="img/tienda_antonia.jpg" alt="Logo Antonia" class="loader-logo">
+            <div class="flower-loader"></div>
+            <p>Preparando tus flores...</p>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="logo">Florería Antonia</div>
+            <nav>
+    <a href="index.html" class="btn-volver">
+        <i class="fas fa-chevron-left"></i> Volver al Inicio
+    </a>
+</nav>
+    </header>
+
+    <section class="banner-antonia">
+        <div class="container-banner">
+            <img src="img/tienda_antonia.jpg" alt="Logo" class="logo-principal" style="max-width: 200px;">
+        </div>
+    </section>
+
+    <div class="container">
+        <h1 id="titulo-catalogo" style="margin-top:40px; text-align:center; color: #333; font-family: 'Playfair Display', serif;">Nuestro Catálogo</h1>
+
+        <div class="filtros-container">
+    <button class="btn-filtro active" onclick="filtrarPorFlor('todas', event)">Todas</button>
+    <button class="btn-filtro" onclick="filtrarPorFlor('Girasoles', event)">Girasoles</button>
+    <button class="btn-filtro" onclick="filtrarPorFlor('Rosas', event)">Rosas</button>
+    <button class="btn-filtro" onclick="filtrarPorFlor('Tulipanes', event)">Tulipanes</button> <button class="btn-filtro" onclick="filtrarPorFlor('Mixto', event)">Ramos Mixtos</button>
+    <button class="btn-filtro" onclick="filtrarPorFlor('Cajitas', event)">Cajitas</button>
+</div>
+
+        <div id="contenedor-productos"></div>
+    </div>
+
+    <div class="custom-banner">
+    <div class="custom-content">
+        <i class="fas fa-magic"></i>
+        <div>
+            <h3>¿Buscas algo único?</h3>
+            <p>Diseñamos el ramo de tus sueños a tu medida.</p>
+        </div>
+    </div>
+    <a href="https://wa.me/56940580014?text=Hola!%20Me%20gustaría%20cotizar%20un%20ramo%20personalizado%20para%20una%20ocasión%20especial.%20¿Me%20podrías%20ayudar?" target="_blank" class="btn-custom">
+        Personaliza tu Ramo
+    </a>
+</div>
+
+    <div id="cart-icon" onclick="toggleCart()"><i class="fas fa-shopping-basket"></i><span id="cart-count">0</span></div>
+    
+    <div id="cart-sidebar">
+        <div class="cart-header"><h3>Tu Pedido</h3><span onclick="toggleCart()" class="close-cart">&times;</span></div>
+        <div id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total" style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:15px;">
+                <span>Total:</span><span id="cart-total-amount">$0</span>
+            </div>
+            <button class="btn-checkout" onclick="abrirModalEnvio()" style="background:#d63384; color:white; border:none; width:100%; padding:15px; border-radius:50px; cursor:pointer; font-weight:bold;">
+                CONTINUAR CON EL PEDIDO
+            </button>
+        </div>
+    </div>
+
+    <div id="modal-envio" class="modal-antonia" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+        <div style="background:white; padding:30px; border-radius:15px; width:90%; max-width:400px; position:relative; font-family:'Montserrat', sans-serif;">
+            <h3 style="font-family:'Playfair Display', serif; color:#d63384; margin-bottom:20px;">Datos de Entrega</h3>
+            <form id="form-pedido">
+                <input type="text" id="nombre-cliente" placeholder="Tu nombre" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #eee; border-radius:8px;">
+                <input type="text" id="direccion-entrega" placeholder="Dirección en La Serena/Coquimbo" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #eee; border-radius:8px;">
+                <textarea id="dedicatoria" placeholder="Mensaje para la tarjeta (opcional)" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #eee; border-radius:8px; height:80px;"></textarea>
+                
+                <button type="submit" style="width:100%; background:#25d366; color:white; border:none; padding:12px; border-radius:50px; cursor:pointer; font-weight:600;">
+                    <i class="fab fa-whatsapp"></i> Finalizar y Enviar a WhatsApp
+                </button>
+                <button type="button" onclick="cerrarModalEnvio()" style="width:100%; background:none; border:none; color:gray; margin-top:10px; font-size:0.8rem; cursor:pointer;">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <a href="https://wa.me/56940580014?text=Hola!%20Me%20gustaría%20cotizar%20un%20ramo%20personalizado%20para%20una%20ocasión%20especial.%20¿Me%20podrías%20ayudar?" 
+       class="whatsapp-float" 
+       target="_blank"
+       style="position:fixed; bottom:20px; right:20px; background:#25d366; color:white; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; z-index:1000; box-shadow: 2px 2px 10px rgba(0,0,0,0.2);">
+       <i class="fab fa-whatsapp"></i>
+    </a>
+
+<script>
+    const productosData = {
+        detalles: [
+            {id: 1, nombre: "Ramo de Girasoles", precio: 14000, img: "img/detalle1.png", categoria: "Girasoles"},
+            {id: 2, nombre: "Ramo Mixto (8 varas)", precio: 18000, img: "img/detalle2.png", categoria: "Mixto"},
+            {id: 3, nombre: "Ramo Mixto con Llavero", precio: 23000, img: "img/detalle3.png", categoria: "Mixto"},
+            {id: 4, nombre: "Tulipanes y Gerberas 6 varas", precio: 18000, img: "img/detalle4.png", categoria: "Mixto; Tulipanes"},
+            {id: 5, nombre: "Ramo 8 tulipanes", precio: 25000, img: "img/detalle5.png", categoria: "Tulipanes"},
+            {id: 6, nombre: "Ramo 3 Gerberas", precio: 12000, img: "img/detalle6.png", categoria: "Mixto; Gerberas"},
+            {id: 7, nombre: "Maxi bouquete 15 varas", precio: 42000, img: "img/detalle7.png", categoria: "Mixto"},
+            {id: 8, nombre: "Ramo 8 tulipanes", precio: 25000, img: "img/detalle8.png", categoria: "Tulipanes"},
+            {id: 9, nombre: "Mini ramo girasol", precio: 5000, img: "img/detalle9.png", categoria: "Girasoles"},
+            {id: 10, nombre: "Ramo Tulipanes y Rosas", precio: 30000, img: "img/detalle10.png", categoria: "Mixto"},
+            {id: 11, nombre: "Ramo 6 girasoles grandes", precio: 18000, img: "img/detalle11.png", categoria: "Girasoles"},
+            {id: 12, nombre: "Mini ramo tulipanes", precio: 10000, img: "img/detalle12.png", categoria: "Tulipanes"},
+            {id: 13, nombre: "Ramo mediano 8 varas", precio: 22000, img: "img/detalle13.png", categoria: "Mixto"},
+            {id: 14, nombre: "Maxi Ramo Romántico 18 varas", precio: 48000, img: "img/detalle14.png", categoria: "Mixto"},
+            {id: 15, nombre: "Ramo 8 rosas", precio: 25000, img: "img/detalle15.png", categoria: "Rosas"},
+            {id: 16, nombre: "Ramo 12 rosas", precio: 35000, img: "img/detalle16.png", categoria: "Rosas"},
+            {id: 17, nombre: "Ramo de 30 rosas", precio: 75000, img: "img/detalle17.png", categoria: "Rosas"},
+            {id: 18, nombre: "Ramo de 15 rosas", precio: 45000, img: "img/detalle18.png", categoria: "Rosas"},
+            {id: 19, nombre: "Ramo 4 rosas y 2 girasoles", precio: 14000, img: "img/detalle19.png", categoria: "Mixto"},
+            {id: 20, nombre: "Ramo 8 rosas", precio: 25000, img: "img/detalle20.png", categoria: "Rosas"},
+            {id: 21, nombre: "Ramo Ferrero y flores surtidas", precio: 30000, img: "img/detalle21.png", categoria: "Mixto"}
+        ],
+        condolencias: [
+            {id: 22, nombre: "Arreglo de Rosas y Lilium", precio: 22000, img: "img/condo1.png", categoria: "Condolencias"},
+            {id: 23, nombre: "Arreglo de Rosas y Lilium", precio: 22000, img: "img/condo2.png", categoria: "Condolencias"},
+            {id: 24, nombre: "Arreglo Talla L", precio: 30000, img: "img/condo3.png", categoria: "Condolencias"},
+            {id: 25, nombre: "Arreglo 5 varas", precio: 20000, img: "img/condo4.png", categoria: "Condolencias"},
+            {id: 26, nombre: "Arreglo 10 varas + follaje", precio: 30000, img: "img/condo5.png", categoria: "Condolencias"},
+            {id: 27, nombre: "Pack 3 arreglos en tono blanco", precio: 85000, img: "img/condo6.png", categoria: "Condolencias"},
+            {id:28, nombre: "Arreglo 8 varas + Follaje", precio: 25000, img: "img/condo7.png", categoria: "Condolencias"},
+            {id: 29, nombre: "Arreglo Talla L", precio: 30000, img: "img/condo8.png", categoria: "Condolencias"},
+            {id: 30, nombre: "Arreglo XL", precio: 40000, img: "img/condo9.png", categoria: "Condolencias"},
+            {id: 31, nombre: "Arreglo 8 varas + follaje", precio: 25000, img: "img/condo10.png", categoria: "Condolencias"},
+        ],
+        cajitas: [
+            {id: 32, nombre: "Cajita Ternura", precio: 18900, img: "img/caja1.png", categoria: "Cajitas"},
+            {id: 33, nombre: "Canasta hello Kitty", precio: 15000, img: "img/caja2.png", categoria: "Cajitas"},
+            {id: 34, nombre: "Cajita Stitch mediano y Rosas", precio: 30000, img: "img/caja3.png", categoria: "Cajitas"},
+            {id: 35, nombre: "Cajita Grande Hello Kitty en Jardín de flores", precio: 45000, img: "img/caja4.png", categoria: "Cajitas"},
+            {id: 36, nombre: "Cajita Amor Infinito", precio: 35000, img: "img/caja5.png", categoria: "Cajitas"},
+            {id: 37, nombre: "Cajita de flores surtidas", precio: 18000, img: "img/caja6.png", categoria: "Cajitas"},
+            {id: 38, nombre: "Cajita Claveles", precio: 18000, img: "img/caja7.png", categoria: "Cajitas"},
+            {id: 39, nombre: "Cajita Stitch mediano", precio: 30000, img: "img/caja8.png", categoria: "Cajitas"},
+            {id: 40, nombre: "Cajita Angela y Rosa", precio: 30000, img: "img/caja9.png", categoria: "Cajitas"},
+            {id: 41, nombre: "Cajita Stitch y rosas + chocolate", precio: 35000, img: "img/caja10.png", categoria: "Cajitas"}
+        ],
+        matrimonio: [
+            {id: 42, nombre: "Ramos 10 varas", precio: 35000, img: "img/matri1.png", categoria: "Matrimonio"},
+            {id: 43, nombre: "Ramos 10 varas", precio: 35000, img: "img/matri2.png", categoria: "Matrimonio"},
+            {id: 44, nombre: "Ramos 10 varas", precio: 35000, img: "img/matri3.png", categoria: "Matrimonio"},
+            {id: 45, nombre: "Ramos 10 varas", precio: 35000, img: "img/matri4.png", categoria: "Matrimonio"}
+        ]
+    };
+
+    let carrito = JSON.parse(localStorage.getItem('carrito-antonia')) || [];
+
+    function quitarPreloader() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            preloader.style.visibility = 'hidden';
+            setTimeout(() => { preloader.style.display = 'none'; }, 800);
+        }
+    }
+
+    function cargarProductos(categoria = 'todas') {
+    const contenedor = document.getElementById('contenedor-productos');
+    if (!contenedor) return;
+    contenedor.innerHTML = ""; 
+    
+    // 1. Unificamos todos los productos
+    const todosLosProductos = [
+        ...productosData.detalles, 
+        ...productosData.cajitas, 
+        ...productosData.condolencias, 
+        ...productosData.matrimonio
+    ];
+    
+    // 2. Lógica de filtrado
+    let filtrados;
+    if (categoria === 'todas') {
+        filtrados = todosLosProductos;
+    } else {
+        filtrados = todosLosProductos.filter(p => {
+            const esDetalle = productosData.detalles.includes(p) && (categoria.toLowerCase() === 'detalles');
+            const esCaja = productosData.cajitas.includes(p) && (categoria.toLowerCase() === 'cajitas');
+            const esCondolencia = productosData.condolencias.includes(p) && (categoria.toLowerCase() === 'condolencias');
+            const esMatrimonio = productosData.matrimonio.includes(p) && (categoria.toLowerCase() === 'matrimonio');
+            const esTipoFlor = p.categoria.toLowerCase().includes(categoria.toLowerCase());
+
+            return esDetalle || esCaja || esCondolencia || esMatrimonio || esTipoFlor;
+        });
+    }
+
+    // 3. Dibujar los productos
+    filtrados.forEach(producto => {
+        const fotosConZoom = ['detalle5', 'detalle6', 'caja1', 'caja3', 'caja4', 'caja6', 'detalle11', 'detalle12'];
+        const necesitaZoom = fotosConZoom.some(n => producto.img.includes(n));
+
+        contenedor.innerHTML += `
+            <div class="card-nueva">
+                <div class="card-visual" onclick="abrirModalDetalle(${producto.id})">
+                    <img src="${producto.img}" alt="${producto.nombre}" class="${necesitaZoom ? 'zoom-especial' : ''}">
+                </div>
+                <div class="card-cuerpo">
+                    <h3 class="card-nombre">${producto.nombre}</h3>
+                    <div class="card-info-row">
+                        <div class="card-precio">
+                            <span>$</span>${producto.precio.toLocaleString('es-CL')}
+                        </div>
+                        <button class="btn-directo" onclick="agregarDirecto(event, '${producto.nombre}', ${producto.precio}, '${producto.img}')">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+    function agregarDirecto(event, nombre, precio, img) {
+        event.stopPropagation();
+        agregarAlCarrito(nombre, precio, img);
+        document.getElementById('cart-sidebar').classList.add('active');
+    }
+
+    function filtrarPorFlor(categoria, evento) {
+        document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('active'));
+        evento.currentTarget.classList.add('active');
+        cargarProductos(categoria);
+    }
+
+    function agregarAlCarrito(nombre, precio, img) {
+        carrito.push({ nombre, precio, img });
+        actualizarInterfazCarrito();
+        const cartIcon = document.getElementById('cart-icon');
+        if(cartIcon) {
+            cartIcon.classList.add('cart-animar');
+            setTimeout(() => cartIcon.classList.remove('cart-animar'), 400);
+        }
+    }
+
+    function eliminarDelCarrito(index) {
+        carrito.splice(index, 1);
+        actualizarInterfazCarrito();
+    }
+
+    function actualizarInterfazCarrito() {
+    const cont = document.getElementById('cart-items');
+    const count = document.getElementById('cart-count');
+    const totalE = document.getElementById('cart-total-amount');
+    
+    localStorage.setItem('carrito-antonia', JSON.stringify(carrito));
+    if(count) count.innerText = carrito.length;
+    if(!cont) return;
+
+    cont.innerHTML = '';
+    let total = 0;
+
+    if (carrito.length === 0) {
+        // RESTAURADA LA FRASE EMOCIONAL ANTERIOR
+        cont.innerHTML = `
+            <div class="cart-empty-msg" style="text-align: center; padding: 60px 20px; animation: fadeIn 0.8s ease;">
+                <i class="fas fa-seedling" style="font-size: 2.5rem; color: #ffc0cb; margin-bottom: 20px; display: block;"></i>
+                <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; color: #4a4a4a; line-height: 1.6;">
+                    "Cada flor es un mensaje que espera ser entregado. <br> 
+                    <span style="color: #d63384; font-weight: 600;">Haz que hoy alguien sonría."</span>
+                </p>
+            </div>`;
+    } else {
+        carrito.forEach((item, i) => {
+            total += item.precio;
+            cont.innerHTML += `
+                <div class="cart-item" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #f9f9f9;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <img src="${item.img}" style="width:45px; height:45px; object-fit:cover; border-radius:8px;">
+                        <div>
+                            <p style="font-weight:600; margin:0; font-size:0.9rem;">${item.nombre}</p>
+                            <p style="color:#d63384; margin:0; font-size:0.85rem;">$${item.precio.toLocaleString('es-CL')}</p>
+                        </div>
+                    </div>
+                    <button onclick="eliminarDelCarrito(${i})" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:1.1rem;">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>`;
+        });
+    }
+    if(totalE) totalE.innerText = `$${total.toLocaleString('es-CL')}`;
+}
+
+    function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
+
+    // FUNCIONES DEL MODAL Y WHATSAPP
+    function abrirModalEnvio() {
+        if (carrito.length === 0) {
+            alert("Tu carrito está vacío");
+            return;
+        }
+        document.getElementById('modal-envio').style.display = 'flex';
+    }
+
+    function cerrarModalEnvio() {
+        document.getElementById('modal-envio').style.display = 'none';
+    }
+
+    document.getElementById('form-pedido').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const nombre = document.getElementById('nombre-cliente').value;
+        const direccion = document.getElementById('direccion-entrega').value;
+        const mensajeDedicatoria = document.getElementById('dedicatoria').value;
+        const numeroAntonia = "56940580014"; 
+
+        let total = 0;
+        let resumenProductos = "";
+        
+        carrito.forEach(item => {
+            resumenProductos += `- ${item.nombre} ($${item.precio.toLocaleString('es-CL')})%0A`;
+            total += item.precio;
+        });
+
+        // TEXTO CON FORMATO PROFESIONAL
+        const textoWhatsApp = `*NUEVO PEDIDO - FLORERÍA ANTONIA*%0A` +
+            `---------------------------------------%0A` +
+            `*Cliente:* ${nombre}%0A` +
+            `*Dirección:* ${direccion}%0A` +
+            `*Dedicatoria:* ${mensajeDedicatoria ? mensajeDedicatoria : "Sin dedicatoria"}%0A%0A` +
+            `*Detalle del Pedido:*%0A${resumenProductos}` +
+            `---------------------------------------%0A` +
+            `*TOTAL A PAGAR:* $${total.toLocaleString('es-CL')}%0A%0A` +
+            `Por favor, confírmame los datos para realizar la transferencia.`;
+
+        const url = `https://wa.me/${numeroAntonia}?text=${textoWhatsApp}`;
+        
+        window.open(url, '_blank');
+        cerrarModalEnvio();
+    });
+
+    window.addEventListener('load', () => {
+        cargarProductos();
+        actualizarInterfazCarrito();
+        quitarPreloader();
+    });
+
+    setTimeout(quitarPreloader, 3000);
+
+    const productos = [
+    { nombre: "Ramo 1", precio: 25000, img: "detalle5.png", zoom: true }, // <--- Esta tendrá zoom
+    { nombre: "Ramo 2", precio: 18000, img: "detalle6.png", zoom: false },
+    { nombre: "Ramo 3", precio: 45000, img: "detalle18.png", zoom: true },
+    { nombre: "Ramo 4", precio: 14000, img: "detalle19.png", zoom: false },
+    { nombre: "Ramo 5", precio: 25000, img: "detalle20.png", zoom: true },
+    { nombre: "Ramo 6", precio: 30000, img: "detalle21.png", zoom: false }  // <--- Esta también
+    // ... así con los 8 que necesites
+];
+
+productos.forEach(item => {
+    // Si item.zoom es true, pone la clase 'zoom-especial', si no, la deja vacía
+    const claseZoom = item.zoom ? 'zoom-especial' : '';
+
+    const html = `
+        <div class="card-nueva">
+            <div class="card-visual">
+                <img src="${item.img}" class="${claseZoom}" alt="${item.nombre}">
+            </div>
+            <div class="card-cuerpo">
+                <p class="card-nombre">${item.nombre}</p>
+                ...
+            </div>
+        </div>
+    `;
+    document.getElementById('contenedor-productos').innerHTML += html;
+});
+
+// Este código detecta si vienes del Index con una categoría
+window.addEventListener('load', () => {
+    const params = new URLSearchParams(window.location.search);
+    const catFiltro = params.get('categoria');
+
+    if (catFiltro) {
+        // Ejecutamos la carga de productos con la categoría que viene en el link
+        cargarProductos(catFiltro);
+        
+        // Opcional: Cambiar el título para que el cliente sepa qué está viendo
+        const titulo = document.getElementById('titulo-catalogo');
+        if(titulo) titulo.innerText = "Catálogo: " + catFiltro.charAt(0).toUpperCase() + catFiltro.slice(1);
+    }
+});
+
+
+</script>
+
+</body>
+</html>

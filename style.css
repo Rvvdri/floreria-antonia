@@ -1,0 +1,492 @@
+/* ================================================================
+   ANTONIA FLORES - VERSIÓN PREMIUM FINALIZADA Y LIMPIA
+   ================================================================ */
+
+/* --- 1. BASE --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Montserrat', sans-serif; color: #333; line-height: 1.6; background-color: #fdfdfd; overflow-x: hidden; }
+.container { width: 90%; max-width: 1200px; margin: auto; }
+
+/* --- 2. HEADER --- */
+header { 
+    padding: 20px 0;
+    background: rgba(255, 255, 255, 0.98); 
+    backdrop-filter: blur(10px); 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+    border-bottom: 2px solid #fff0f5;
+    box-shadow: 0 4px 15px rgba(214, 51, 132, 0.05);
+}
+header .container { display: flex; justify-content: space-between; align-items: center; }
+
+.logo { 
+    font-size: 2.2rem; 
+    font-weight: 800; 
+    color: #d63384; 
+    text-decoration: none; 
+    letter-spacing: -1px;
+    transition: 0.3s;
+}
+
+nav ul { display: flex; list-style: none; align-items: center; }
+nav ul li a { 
+    text-decoration: none; 
+    color: #4a4a4a; 
+    margin-left: 35px; 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    position: relative;
+    transition: 0.3s;
+}
+
+/* Efecto hover menú */
+nav ul li a::after {
+    content: ''; position: absolute; width: 0; height: 2px;
+    bottom: -5px; left: 0; background-color: #d63384; transition: 0.3s;
+}
+nav ul li a:hover { color: #d63384; }
+nav ul li a:hover::after { width: 100%; }
+
+/* --- 3. BANNER --- */
+.banner-antonia { background-color: #fff5f7; padding: 20px 0 30px 0 !important; text-align: center; }
+.logo-principal { max-width: 250px !important; width: 100%; height: auto; border-radius: 15px; filter: drop-shadow(0 5px 15px rgba(214, 51, 132, 0.1)); }
+
+/* --- 4. CATEGORÍAS (INDEX) --- */
+.categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; padding: 40px 0; }
+.cat-card { text-decoration: none; position: relative; aspect-ratio: 1 / 1; border-radius: 15px; overflow: hidden; display: block; box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
+.cat-card .img-product { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.cat-card:hover .img-product { transform: scale(1.1); }
+.card-overlay { position: absolute; bottom: 0; width: 100%; padding: 15px; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); text-align: center; }
+.card-overlay p { color: white; font-size: 1.1rem; font-weight: bold; }
+
+/* --- 5. GRID DE PRODUCTOS (CATÁLOGO) --- */
+#contenedor-productos { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+    gap: 25px; 
+    padding: 20px 0; 
+}
+
+.card-nueva { 
+    background: white; border-radius: 25px; border: 1px solid #f0f0f0; 
+    overflow: hidden; transition: all 0.3s ease; display: flex; flex-direction: column; height: 100%; 
+}
+.card-nueva:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(214, 51, 132, 0.12); border-color: #f9e1ed; }
+
+.card-visual { 
+    width: 100%; height: 260px; background: #fdfdfd; 
+    display: flex; justify-content: center; align-items: center; 
+    overflow: hidden; padding: 15px; 
+}
+
+.card-visual img { 
+    max-width: 100%; max-height: 100%; 
+    object-fit: contain; /* Mantiene la flor dentro del cuadro sin estirarla */
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+}
+.card-nueva:hover .card-visual img { transform: scale(1.1); }
+
+/* CLASE ESPECIAL PARA RAMOS PEQUEÑOS */
+.zoom-especial { transform: scale(1.4) !important; }
+.card-nueva:hover .zoom-especial { transform: scale(1.5) !important; }
+
+.card-cuerpo { padding: 20px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1; }
+.card-nombre { font-size: 1rem; font-weight: 600; min-height: 2.8em; }
+.card-info-row { display: flex; justify-content: space-between; align-items: center; background: #fff5f8; padding: 10px 15px; border-radius: 15px; margin-top: auto; }
+.card-precio { color: #d63384; font-weight: 800; font-size: 1.25rem; }
+.btn-directo { width: 45px; height: 45px; background: #d63384; color: white; border: none; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+
+/* --- 6. CARRITO SIDEBAR --- */
+#cart-sidebar { position: fixed; top: 0; right: -400px; width: 350px; height: 100vh; background: white; z-index: 100001; transition: 0.4s cubic-bezier(0.77, 0.2, 0.05, 1.0); display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+#cart-sidebar.active { right: 0; }
+.cart-header { padding: 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+#cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+.cart-footer { padding: 25px; border-top: 1px solid #eee; background: #fdfdfd; }
+.btn-checkout { width: 100%; background-color: #2ecc71; color: white; border: none; padding: 18px; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+/* LA X DE CIERRE */
+.close-cart {
+    width: 40px;
+    height: 40px;
+    background-color: #fff0f5;
+    color: #d63384;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer !important; /* Fuerza el cursor de mano */
+    transition: 0.3s;
+    border: 1px solid #f9e1ed;
+    position: relative;
+    z-index: 100002; /* Por encima de todo en el header del carrito */
+}
+.close-cart:hover {
+    background-color: #d63384;
+    color: white;
+    transform: rotate(90deg);
+}
+
+/* --- 7. PRE-LOADER --- */
+#preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 1000000; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+.preloader-content { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; }
+.loader-logo { width: 120px !important; height: 120px !important; object-fit: cover; border-radius: 50%; border: 3px solid #fdf2f7; animation: pulseLogo 2s infinite ease-in-out; }
+.flower-loader { width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #d63384; border-radius: 50%; animation: spinLoader 1s linear infinite; }
+@keyframes spinLoader { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes pulseLogo { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
+
+/* ================================================================
+   8. RESPONSIVE (TODO EL MÓVIL AQUÍ)
+   ================================================================ */
+@media screen and (max-width: 600px) {
+    /* Header */
+    .logo { font-size: 1.6rem; }
+    nav ul li a { font-size: 0.8rem; margin-left: 15px; }
+    
+    /* Grid de 2 columnas */
+    #contenedor-productos { grid-template-columns: 1fr 1fr !important; gap: 10px !important; padding: 10px; }
+    
+    /* CORRECCIÓN RAMOS GIGANTES EN MÓVIL */
+    .card-visual { height: 160px !important; padding: 10px; }
+    .card-visual img { max-width: 90%; max-height: 90%; }
+    .zoom-especial { transform: scale(1.15) !important; } /* Zoom más suave en móvil */
+
+    .card-nombre { font-size: 0.85rem !important; min-height: 2.5em; padding: 0 5px; }
+    .card-precio { font-size: 1rem; }
+    .btn-directo { width: 35px; height: 35px; font-size: 1rem; }
+
+    /* Footer móvil */
+    .footer-container { flex-direction: column; text-align: center; }
+    .mapa-cuadrado { width: 100%; height: 250px; }
+    .marca-footer { font-size: 2rem; }
+    
+    /* Botones flotantes más pequeños */
+    #cart-icon, .whatsapp-float { width: 50px !important; height: 50px !important; bottom: 20px !important; }
+    .whatsapp-float { right: 20px; }
+    #cart-icon { right: 80px; }
+}
+
+/* --- 9. FOOTER PREMIUM (ESTRUCTURA FINAL CORREGIDA) --- */
+.footer-premium { 
+    background-color: #fff5f7; 
+    padding: 80px 0 40px 0; 
+    border-top: 1px solid #ffe0e6; 
+    margin-top: 50px; 
+}
+
+.footer-container { 
+    display: flex; 
+    justify-content: space-between; /* Texto a la izquierda, Mapa a la derecha */
+    align-items: center; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 5%;
+    flex-wrap: wrap; 
+}
+
+.footer-textos { 
+    flex: 1; 
+    text-align: left; 
+    min-width: 300px;
+}
+
+.marca-footer { 
+    font-family: 'Cinzel', serif; 
+    font-size: 3.8rem; 
+    color: #d63384; 
+    font-weight: 900; 
+    line-height: 1.1;
+    margin-bottom: 15px;
+}
+
+.eslogan-footer {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    color: #4a4a4a;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* CONTENEDOR DEL MAPA */
+.footer-visual {
+    flex: 0 0 auto;
+}
+
+.mapa-cuadrado { 
+    width: 400px; 
+    height: 400px; 
+    border-radius: 40px; 
+    overflow: hidden; 
+    border: 8px solid white; 
+    box-shadow: 0 15px 35px rgba(214, 51, 132, 0.15);
+    background-color: #f0f0f0; /* Fondo base mientras carga */
+}
+
+/* Regla vital: el iframe DEBE llenar el contenedor */
+.mapa-cuadrado iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+}
+
+.footer-copyright-final { 
+    text-align: center; 
+    width: 100%; 
+    margin-top: 60px; 
+    padding-top: 20px;
+    border-top: 1px solid #ffe0e6;
+    font-size: 0.85rem; 
+    color: #999; 
+}
+
+/* ================================================================
+   10. BOTONES FLOTANTES (CON ANIMACIÓN DE CLICK Y CURSOR)
+   ================================================================ */
+
+#cart-icon, .whatsapp-float {
+    position: fixed !important;
+    bottom: 30px !important;
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* ESTA ES LA LÍNEA CLAVE */
+    text-decoration: none !important; /* Quita la línea de abajo */
+    
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+}
+
+.whatsapp-float { 
+    right: 30px !important; 
+    background-color: #25d366 !important; 
+    z-index: 99999 !important;
+}
+
+#cart-icon { 
+    right: 105px !important; 
+    background-color: #d63384 !important; 
+    z-index: 99998 !important;
+}
+
+/* EFECTO HOVER (PASAR EL MOUSE) */
+#cart-icon:hover, .whatsapp-float:hover { 
+    transform: scale(1.1) translateY(-5px) !important; 
+    filter: brightness(1.1);
+}
+
+/* EFECTO CLICK (AL PRESIONAR) */
+#cart-icon:active, .whatsapp-float:active {
+    transform: scale(0.9) !important; /* <--- ESTO HACE QUE SE HUNDA AL TOCARLO */
+}
+
+/* Iconos internos */
+.whatsapp-float i { font-size: 32px !important; color: white !important; }
+#cart-icon i { font-size: 24px !important; color: white !important; }
+
+/* Iconos internos */
+.whatsapp-float i { font-size: 32px !important; color: white !important; }
+#cart-icon i { font-size: 24px !important; color: white !important; }
+
+/* Efecto hover */
+.whatsapp-float:hover, #cart-icon:hover { transform: scale(1.1) translateY(-5px) !important; }
+
+/* Oculta el contador de burbuja blanca */
+#cart-count {
+    display: none !important;
+}
+/* Si el carrito está en el menú */
+nav ul li a i {
+    font-size: 1.4rem; /* Icono del carrito más grande */
+    color: #d63384;
+}
+
+/* Estilo especial si el botón de catálogo quieres que parezca un botón */
+.nav-catalogo {
+    background: #d63384;
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 50px;
+    margin-left: 25px;
+}
+
+.nav-catalogo:hover {
+    background: #b52a6f;
+    transform: translateY(-2px);
+}
+
+/* --- BOTÓN VOLVER AL INICIO --- */
+.btn-volver {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #d63384 !important; /* El rosa de tu marca */
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    border: 2px solid #f9e1ed;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.btn-volver i {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-volver:hover {
+    background: #d63384;
+    color: white !important;
+    border-color: #d63384;
+    box-shadow: 0 5px 15px rgba(214, 51, 132, 0.2);
+    transform: translateX(-5px); /* Pequeño movimiento a la izquierda */
+}
+
+.btn-volver:hover i {
+    transform: translateX(-3px); /* La flecha se mueve un poco más */
+}
+
+/* Ajuste para móvil */
+@media (max-width: 600px) {
+    .btn-volver {
+        padding: 8px 15px;
+        font-size: 0.75rem;
+    }
+}
+
+/* --- BANNER DE PERSONALIZACIÓN --- */
+.custom-banner {
+    background: linear-gradient(135deg, #fff5f8 0%, #ffffff 100%);
+    border: 2px dashed #d63384;
+    border-radius: 20px;
+    padding: 25px;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    box-shadow: 0 10px 20px rgba(214, 51, 132, 0.05);
+}
+
+.custom-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.custom-content i {
+    font-size: 2.5rem;
+    color: #d63384;
+    animation: floating 3s ease-in-out infinite;
+}
+
+.custom-content h3 {
+    font-family: 'Playfair Display', serif;
+    color: #333;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+}
+
+.custom-content p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.btn-custom {
+    background-color: #d63384;
+    color: white !important;
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(214, 51, 132, 0.2);
+}
+
+.btn-custom:hover {
+    background-color: #b52a6f;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(214, 51, 132, 0.3);
+}
+
+/* Animación del icono mágico */
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Responsive para móvil */
+@media (max-width: 768px) {
+    .custom-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    .custom-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* --- COLORES PERSONALIZADOS PARA FILTROS --- */
+
+/* GIRASOLES - Amarillo vibrante pero legible */
+.btn-filtro[onclick*="Girasoles"]:hover, 
+.btn-filtro[onclick*="Girasoles"].active {
+    background: #FFD700 !important;
+    border-color: #FFD700 !important;
+    color: #333 !important; /* Texto oscuro para que se lea bien en amarillo */
+}
+
+/* ROSAS - Rojo pasión elegante */
+.btn-filtro[onclick*="Rosas"]:hover, 
+.btn-filtro[onclick*="Rosas"].active {
+    background: #E63946 !important;
+    border-color: #E63946 !important;
+    color: white !important;
+}
+
+/* TULIPANES - Morado/Violeta Tulipán */
+.btn-filtro[onclick*="Tulipanes"]:hover, 
+.btn-filtro[onclick*="Tulipanes"].active {
+    background: #9b59b6 !important;
+    border-color: #9b59b6 !important;
+    color: white !important;
+}
+
+/* MIXTOS Y CAJITAS - Mantienen tu rosa característico */
+.btn-filtro[onclick*="Mixto"]:hover, 
+.btn-filtro[onclick*="Mixto"].active,
+.btn-filtro[onclick*="Cajitas"]:hover, 
+.btn-filtro[onclick*="Cajitas"].active {
+    background: #d63384 !important;
+    border-color: #d63384 !important;
+    color: white !important;
+}
+
+.btn-filtro {
+    padding: 10px 25px;
+    border: 2px solid #eee; /* Borde gris suave cuando está inactivo */
+    background: white;
+    color: #666; /* Texto gris cuando está inactivo */
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}

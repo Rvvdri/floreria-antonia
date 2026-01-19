@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florería Antonia - Flores que enamoran</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        /* PUNTO 2: Animación de salto para el carrito */
+        @keyframes cartJump {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+        .cart-animar { animation: cartJump 0.4s ease-out; }
+    </style>
+</head>
+
+<body>
+
+    <div id="preloader">
+        <div class="preloader-content">
+            <img src="img/tienda_antonia.jpg" alt="Logo Antonia" class="loader-logo">
+            <div class="flower-loader"></div>
+            <p>Cargando Experiencia...</p>
+        </div>
+    </div>
+
+    <div id="notificacion-pedido" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:30px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2); z-index:9999; text-align:center; width:85%; max-width:400px;">
+        <i class="fas fa-check-circle" style="color:#25d366; font-size:50px; margin-bottom:15px;"></i>
+        <h2 style="font-family:'Playfair Display';">¡Pedido en Proceso!</h2>
+        <p>Te estamos redirigiendo a WhatsApp para coordinar la entrega y el pago.</p>
+        <button onclick="document.getElementById('notificacion-pedido').style.display='none'" style="background:#d63384; color:white; border:none; padding:10px 20px; border-radius:10px; margin-top:15px; cursor:pointer; font-weight:bold;">Entendido</button>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="logo">Florería Antonia</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="catalogo.html">Catálogo</a></li>
+                    <li id="cart-menu-icon" class="cart-menu-item" onclick="toggleCart()" style="cursor:pointer; position:relative; margin-left:20px; transition: 0.3s;">
+                        <i class="fas fa-shopping-basket" style="font-size: 1.5rem; color: #d63384;"></i>
+                        <span id="cart-count">0</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="banner-antonia">
+        <div class="container-banner">
+            <img src="img/tienda_antonia.jpg" alt="Florería Antonia" class="logo-principal">
+        </div>
+    </section>
+
+    <section class="categories container">
+    <a href="catalogo.html?categoria=detalles" class="cat-card">
+        <div class="card-image-container">
+            <img src="img/rosasjpg.jpeg" alt="Detalles Especiales" class="img-product">
+            <div class="card-overlay"><p>Detalles Especiales</p></div>
+        </div>
+    </a>
+    <a href="catalogo.html?categoria=condolencias" class="cat-card">
+        <div class="card-image-container">
+            <img src="img/Condolenciasportada.jpg" alt="Condolencias" class="img-product">
+            <div class="card-overlay"><p>Condolencias</p></div>
+        </div>
+    </a>
+    <a href="catalogo.html?categoria=cajitas" class="cat-card">
+        <div class="card-image-container">
+            <img src="img/Cajitasportada.jpg" alt="Cajita de Flores" class="img-product">
+            <div class="card-overlay"><p>Cajita de Flores</p></div>
+        </div>
+    </a>
+    <a href="catalogo.html?categoria=matrimonio" class="cat-card">
+        <div class="card-image-container">
+            <img src="img/Casamientoportada.jpg" alt="Matrimonio" class="img-product">
+            <div class="card-overlay"><p>Matrimonio</p></div>
+        </div>
+    </a>
+</section>
+   
+
+    <section class="testimonios container" style="margin: 80px auto; text-align: center;">
+        <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 40px; color: #333;">Experiencias Antonia</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;">
+            <div class="testimonio-item" style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                <div style="color: #FFD700; margin-bottom: 10px;">★★★★★</div>
+                <p style="font-style: italic; font-size: 0.95rem; color: #555;">"Los girasoles estaban fresquísimos y el empaque muy elegante. ¡A mi mamá le encantó!"</p>
+                <p style="font-weight: bold; margin-top: 15px; color: #d63384;">— Marcela G.</p>
+            </div>
+            <div class="testimonio-item" style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                <div style="color: #FFD700; margin-bottom: 10px;">★★★★★</div>
+                <p style="font-style: italic; font-size: 0.95rem; color: #555;">"Excelente servicio de entrega en Coquimbo. Muy puntuales y el ramo idéntico a la foto."</p>
+                <p style="font-weight: bold; margin-top: 15px; color: #d63384;">— Ricardo M.</p>
+            </div>
+            <div class="testimonio-item" style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                <div style="color: #FFD700; margin-bottom: 10px;">★★★★★</div>
+                <p style="font-style: italic; font-size: 0.95rem; color: #555;">"Compré una cajita de rosas y la presentación es de otro nivel. Totalmente recomendado."</p>
+                <p style="font-weight: bold; margin-top: 15px; color: #d63384;">— Javiera P.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-premium">
+    <div class="footer-container">
+        <div class="footer-textos">
+            <h2 class="marca-footer">Flores Antonia</h2>
+            <p class="eslogan-footer">Arte en cada pétalo</p>
+        </div>
+
+        <div class="mapa-cuadrado">
+    <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3459.232338959954!2d-71.255702924443!3d-29.91523457499118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9691cb38cf61e3af%3A0x42e643156d871250!2sHuanhual%C3%AD%20467%2C%201710344%20La%20Serena%2C%20Coquimbo!5e0!3m2!1ses!2scl!4v1705625000000!5m2!1ses!2scl" 
+        width="100%" 
+        height="100%" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
+
+        <div class="footer-copyright-final">
+            &copy; 2026 Florería Antonia - La Serena, Coquimbo.
+        </div>
+    </div>
+</footer>
+
+    <a href="https://wa.me/56940580014?text=Hola!%20Vengo%20desde%20tu%20sitio%20web." class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <div id="cart-sidebar">
+        <div class="cart-header"><h3 style="font-family:'Playfair Display';">Tu Pedido</h3><span onclick="toggleCart()" class="close-cart">&times;</span></div>
+        <div id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total" style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:bold;">
+                <span>Total:</span><span id="cart-total-amount">$0</span>
+            </div>
+            <button class="btn-checkout" onclick="enviarPedidoWhatsApp()" style="width:100%; background:#25d366; color:white; border:none; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;">
+                <i class="fab fa-whatsapp"></i> Enviar Pedido
+            </button>
+        </div>
+    </div>
+
+<script>
+    let carrito = JSON.parse(localStorage.getItem('carrito-antonia')) || [];
+
+    function actualizarInterfazCarrito() {
+        const contenedor = document.getElementById('cart-items');
+        const contador = document.getElementById('cart-count');
+        const totalElem = document.getElementById('cart-total-amount');
+        const cartIcon = document.getElementById('cart-menu-icon'); // ID para el salto
+
+        localStorage.setItem('carrito-antonia', JSON.stringify(carrito));
+        
+        if(contador) contador.innerText = carrito.length;
+        
+        // PUNTO 2: Animación de salto cada vez que se actualiza
+        if(cartIcon) {
+            cartIcon.classList.add('cart-animar');
+            setTimeout(() => cartIcon.classList.remove('cart-animar'), 400);
+        }
+
+        if(!contenedor) return;
+        contenedor.innerHTML = '';
+        let total = 0;
+        
+        carrito.forEach((item, index) => {
+            total += item.precio;
+            contenedor.innerHTML += `
+                <div class="cart-item" style="display:flex; align-items:center; margin-bottom:15px; padding: 10px; border-bottom: 1px solid #eee;">
+                    <img src="${item.img}" width="50" height="50" style="object-fit:cover; border-radius:8px; margin-right:15px;">
+                    <div style="flex:1;">
+                        <p style="font-size:14px; font-weight:bold; margin:0;">${item.nombre}</p>
+                        <small style="color:#d63384;">$${item.precio.toLocaleString()}</small>
+                    </div>
+                    <i class="fas fa-trash-alt" onclick="eliminarDelCarrito(${index})" style="color:#ccc; cursor:pointer; padding:5px;"></i>
+                </div>`;
+        });
+        if(totalElem) totalElem.innerText = `$${total.toLocaleString()}`;
+    }
+
+    function eliminarDelCarrito(index) {
+        carrito.splice(index, 1);
+        actualizarInterfazCarrito();
+    }
+
+    function toggleCart() {
+        const sidebar = document.getElementById('cart-sidebar');
+        if(sidebar) {
+            sidebar.classList.toggle('active');
+            if(sidebar.classList.contains('active')) actualizarInterfazCarrito();
+        }
+    }
+
+    // PUNTO 3: Enviar pedido con notificación
+    function enviarPedidoWhatsApp() {
+        if (carrito.length === 0) return alert("El carrito está vacío");
+        
+        // Mostrar aviso visual elegante
+        document.getElementById('notificacion-pedido').style.display = 'block';
+        
+        let mensaje = "¡Hola Florería Antonia! Me gustaría hacer el siguiente pedido:\n\n";
+        let total = 0;
+        carrito.forEach(item => {
+            mensaje += `- ${item.nombre} ($${item.precio.toLocaleString()})\n`;
+            total += item.precio;
+        });
+        mensaje += `\n*Total a pagar: $${total.toLocaleString()}*`;
+        
+        // Pequeño delay para que el cliente vea el mensaje antes de salir
+        setTimeout(() => {
+            window.open(`https://wa.me/56940580014?text=${encodeURIComponent(mensaje)}`, '_blank');
+        }, 1500);
+    }
+
+    function crearPetalos() {
+        const container = document.body;
+        for (let i = 0; i < 15; i++) {
+            const petalo = document.createElement('div');
+            petalo.className = 'petal';
+            petalo.style.left = Math.random() * window.innerWidth + 'px';
+            petalo.style.animationDuration = (Math.random() * 5) + 7 + 's';
+            container.appendChild(petalo);
+        }
+    }
+
+    const observar = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+            }
+        });
+    }, { threshold: 0.1 });
+
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            setTimeout(() => {
+                preloader.classList.add('loader-hidden');
+                setTimeout(() => { preloader.style.display = 'none'; }, 800);
+            }, 2000);
+        }
+        actualizarInterfazCarrito();
+        crearPetalos();
+        
+        // Animamos también los testimonios
+        document.querySelectorAll('.cat-card, .info-box, .testimonio-item').forEach(el => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(30px)";
+            el.style.transition = "all 0.8s ease-out";
+            observar.observe(el);
+        });
+    });
+
+    const cartIcon = document.getElementById('cart-icon'); // En el catálogo se llama 'cart-icon'
+if(cartIcon) {
+    cartIcon.classList.add('cart-animar');
+    setTimeout(() => cartIcon.classList.remove('cart-animar'), 400);
+}
+
+    window.onclick = (e) => { 
+        const sidebar = document.getElementById('cart-sidebar');
+        if (e.target == sidebar) toggleCart(); 
+    }
+
+    window.addEventListener('scroll', () => {
+    const elementos = document.querySelectorAll('.revelar');
+    elementos.forEach(el => {
+        const posicion = el.getBoundingClientRect().top;
+        const pantalla = window.innerHeight / 1.2;
+        if (posicion < pantalla) {
+            el.classList.add('activo');
+        }
+    });
+});
+
+window.addEventListener('scroll', () => {
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(window => {
+        const windowHeight = window.innerHeight;
+        const revealTop = reveals[i].getBoundingClientRect().top;
+        if (revealTop < windowHeight - 150) {
+            reveals[i].classList.add('active');
+        }
+    });
+});
+
+
+
+</script>
+
+
+</body>
+</html>
